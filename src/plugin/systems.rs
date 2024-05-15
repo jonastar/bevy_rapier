@@ -12,7 +12,7 @@ use crate::geometry::{
     RapierColliderHandle, Restitution, Sensor, SolverGroups,
 };
 use crate::pipeline::{CollisionEvent, ContactForceEvent};
-use crate::plugin::configuration::{SimulationToRenderTime, TimestepMode};
+use crate::plugin::configuration::SimulationToRenderTime;
 use crate::plugin::{RapierConfiguration, RapierContext};
 use crate::prelude::{
     AdditionalSolverIterations, BevyPhysicsHooks, BevyPhysicsHooksAdapter, CollidingEntities,
@@ -565,7 +565,7 @@ pub fn writeback_rigid_bodies(
                 if let Some(rb) = context.bodies.get(handle) {
                     let mut interpolated_pos = utils::iso_to_transform(rb.position());
 
-                    if let TimestepMode::Interpolated { dt, .. } = config.timestep_mode {
+                    if let Some(dt) = config.timestep_mode.fixed_dt() {
                         if let Some(interpolation) = interpolation.as_deref_mut() {
                             if interpolation.end.is_none() {
                                 interpolation.end = Some(*rb.position());
@@ -1602,7 +1602,8 @@ mod tests {
             .unwrap();
         assert!(
             colliding_entities1.is_empty(),
-            "Colliding entity should be removed from the CollidingEntities component when the collision ends"
+            "Colliding entity should be removed from the CollidingEntities component when the \
+             collision ends"
         );
 
         let colliding_entities2 = app
@@ -1612,7 +1613,8 @@ mod tests {
             .unwrap();
         assert!(
             colliding_entities2.is_empty(),
-            "Colliding entity should be removed from the CollidingEntities component when the collision ends"
+            "Colliding entity should be removed from the CollidingEntities component when the \
+             collision ends"
         );
     }
 

@@ -50,6 +50,16 @@ pub enum TimestepMode {
     },
 }
 
+impl TimestepMode {
+    pub(crate) fn fixed_dt(&self) -> Option<f32> {
+        match self {
+            TimestepMode::Fixed { dt, .. } => Some(*dt),
+            TimestepMode::Variable { .. } => None,
+            TimestepMode::Interpolated { dt, .. } => Some(*dt),
+        }
+    }
+}
+
 #[derive(Resource, Copy, Clone, Debug)]
 /// A resource for specifying configuration information for the physics simulation
 pub struct RapierConfiguration {

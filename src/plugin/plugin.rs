@@ -245,7 +245,11 @@ where
                 match config.timestep_mode {
                     TimestepMode::Fixed { .. } => {}
                     mode => {
-                        warn!("TimestepMode is set to `{:?}`, it is recommended to use `TimestepMode::Fixed` if you have the physics in `FixedUpdate`", mode);
+                        warn!(
+                            "TimestepMode is set to `{:?}`, it is recommended to use \
+                             `TimestepMode::Fixed` if you have the physics in `FixedUpdate`",
+                            mode
+                        );
                     }
                 }
             }
